@@ -1,23 +1,62 @@
 #
 '''Tacocat Models'''
+import datetime
 
-from peewee import *
+from flask.ext.login import UserMixin
+from flask.ext.bcrypt import generate_password_hash #, check_password_hash
 
-class User(Model):
+# from peewee import *
+from peewee import SqliteDatabase, Model
+from peewee import CharField, DateTimeField, BooleanField, TextField
+from peewee import IntegrityError
+
+DATABASE = SqliteDatabase('social.db')
+
+class User(UserMixin, Model):
     """User Model
     """
+    email = CharField(unique=True)
+    password = CharField(max_length=100)
+    joined_at = DateTimeField(default=datetime.datetime.now)
+    is_admin = BooleanField(default=False)
     
-    def __init__(self):
-        """Initialize User Model
-        """
+    class Meta:
+        database = DATABASE
+
+    @classmethod
+    def create_user(cls, username, email, password, admin):
+        try:
+            with DATABASE.transaction():
+                cls.create(
+                    username=username,
+                    email=email,
+                    password=generate_password_hash(password),
+                    is_admin=admin)
+        except IntegrityError:
+            raise ValueError("User already exists")
+        
+        #joined_at
         pass
+
 
 class Taco(Model):
     """Taco Model
     """
+    protein = CharField()
+    shell = CharField()
+    cheese = BooleanField(default=False)
+    extras = TextField()
     
+    class Meta:
+        database = DATABASE
+
     def __init__(self, ):
         """Initialize Taco Model
         """
         
         pass
+
+def initialize():
+    DATABASE.connect()
+    DATABASE.create_tables([User, Taco], safe=True)
+    DATABASE.close()

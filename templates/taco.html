@@ -8,9 +8,11 @@
   {{ form.hidden_tag() }}
   <div class="row">
     <div class="six columns">
+      {{ form.protein.erro }}
       {{ render_field(form.protein) }}
     </div>
     <div class="six columns">
+      {{ form.shell.erro }}
       {{ render_field(form.shell) }}
     </div>
   </div>
