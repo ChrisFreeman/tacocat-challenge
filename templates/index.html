@@ -16,11 +16,19 @@
         {% for taco in tacos %}
             <tr>
               <!-- taco attributes here -->
+              <td>{{ taco.protein }}</td>
+              <td>{% if taco.cheese %}Yes{% else %}No{% endif %}</td>
+              <td>{{ taco.shell }}</td>
+              <td>{{ taco.extras }}</td>
             </tr>
         {% endfor %}
           </tbody>
         </table>
     {% else %}
         <!-- message for missing tacos -->
+        <p>
+          Sorry, no tacos listed yet.
+          <a href="{{ url_for('taco') }}">Add one!</a>
+        </p>
     {% endif %}
 {% endblock %}

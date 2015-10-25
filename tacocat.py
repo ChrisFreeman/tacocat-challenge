@@ -1,5 +1,5 @@
-from flask import Flask, render_template, flash, g, redirect, url_for
-#, request, abort
+from flask import Flask, render_template, flash, g, redirect, url_for, request
+#, abort
 
 from flask.ext.bcrypt import check_password_hash
 from flask.ext.login import (LoginManager, current_user, login_required,
@@ -69,6 +69,7 @@ def logout():
     flash("You've been logged out!", "success")
     return redirect(url_for('index'))
 
+# register
 @app.route('/register', methods=('Get', 'Post'))
 def register():
     form = forms.RegisterForm()
@@ -86,18 +87,24 @@ def register():
             return redirect(url_for('index'))
     return render_template('register.html', form=form)
 
+# taco
 @app.route('/taco', methods=('Get', 'Post'))
 @login_required
 def taco():
     form = forms.TacoForm()
     if form.validate_on_submit():
-        print("Taco form valid")
-    else:
-        flash("Taco form NOT valid", "error")
+        #try:
+            models.Taco.create(
+                protein=form.protein.data.lower(),
+                shell=form.shell.data.lower(),
+                cheese=form.cheese.data,
+                extras=form.extras.data.lower())
+            return redirect(url_for('index'))
+        #except:
+        #    flash("Taco create failed", "error")
+    elif request.method == 'POST':
         flash("Taco form NOT valid", "warning")
     return render_template('taco.html', form=form)
-
-# logout
 
 
 if __name__ == '__main__':

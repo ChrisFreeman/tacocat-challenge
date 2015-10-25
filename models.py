@@ -49,11 +49,6 @@ class Taco(Model):
     class Meta:
         database = DATABASE
 
-    def __init__(self, ):
-        """Initialize Taco Model
-        """
-        
-        pass
 
 def initialize():
     DATABASE.connect()

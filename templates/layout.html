@@ -25,10 +25,13 @@
           <nav class="menu">
               <!-- menu goes here -->
               {% if current_user.is_authenticated %}
+                <p>Welcome {{ current_user.email }}</p>
                 <a href="{{ url_for('taco') }}">Add a New Taco</a>
                 <a href="{{ url_for('logout') }}">Log Out</a>
               {% else %}
+                <p>Welcome!!</p>
                 <a href="{{ url_for('login') }}">Log In</a>
+                <a href="{{ url_for('register') }}">Register</a>
               {% endif %}
           </nav>
           {% block content %}{% endblock %}
