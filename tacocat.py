@@ -73,8 +73,17 @@ def logout():
 def register():
     form = forms.RegisterForm()
     if form.validate_on_submit():
-        pass
-    
+        try:
+            models.User.create_user(
+                email=form.email.data,
+                password=form.password.data,
+                admin=True)
+            print("User {} created".format(form.email.data))
+        except ValueError:
+            flash("User {} already exists".format(form.email.data))
+        else:
+            flash("User {} created".format(form.email.data))
+            return redirect(url_for('index'))
     return render_template('register.html', form=form)
 
 @app.route('/taco', methods=('Get', 'Post'))
