@@ -3,7 +3,7 @@ from flask import Flask, render_template, flash, g, redirect, url_for
 
 from flask.ext.bcrypt import check_password_hash
 from flask.ext.login import (LoginManager, current_user, login_required,
-                             login_user) #, logout_user)
+                             login_user, logout_user)
 
 from peewee import DoesNotExist
 
@@ -60,6 +60,14 @@ def login():
             else:
                 flash("Your email or password doesn't match", "error")
     return render_template('login.html', form=form)
+
+# logout
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("You've been logged out!", "success")
+    return redirect(url_for('index'))
 
 @app.route('/register', methods=('Get', 'Post'))
 def register():
