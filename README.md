@@ -29,3 +29,10 @@ Other than that, it's up to you! Do whatever you think this MVP needs!
 * Tacos have a protein, a shell, a true/false for cheese, and a freeform area for extras
 * Once entered, tacos show up on the home page
 * If there aren't any tacos, show a message on the home page
+
+### Extra Credit
+
+Take it further!
+
+* Let users follow each other or give thumbs ups to great taco creations.
+* Add a way for users to change their password or delete their account, too
