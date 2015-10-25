@@ -96,7 +96,6 @@ if __name__ == '__main__':
     try:
         #with models.DATABASE.transaction():
         models.User.create_user(
-            username='chrisfreeman',
             email='chris.freeman.pdx@gmail.com',
             password='password',
             admin=True)
