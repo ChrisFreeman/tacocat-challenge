@@ -95,6 +95,7 @@ def taco():
     if form.validate_on_submit():
         #try:
             models.Taco.create(
+                user=g.user._get_current_object(),
                 protein=form.protein.data.lower(),
                 shell=form.shell.data.lower(),
                 cheese=form.cheese.data,

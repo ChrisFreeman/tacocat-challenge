@@ -7,7 +7,7 @@ from flask.ext.bcrypt import generate_password_hash #, check_password_hash
 
 # from peewee import *
 from peewee import SqliteDatabase, Model
-from peewee import CharField, DateTimeField, BooleanField, TextField
+from peewee import CharField, DateTimeField, BooleanField, TextField, ForeignKeyField
 from peewee import IntegrityError
 
 DATABASE = SqliteDatabase('social.db')
@@ -41,6 +41,10 @@ class User(UserMixin, Model):
 class Taco(Model):
     """Taco Model
     """
+    user = ForeignKeyField(
+        rel_model = User,
+        related_name='posts'
+        )
     protein = CharField()
     shell = CharField()
     cheese = BooleanField(default=False)
