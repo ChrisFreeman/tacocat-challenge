@@ -21,12 +21,14 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+
 @login_manager.user_loader
 def load_user(userid):
     try:
         return models.User.get(models.User.id == userid)
     except DoesNotExist:
         return None
+
 
 @app.before_request
 def before_request():
@@ -42,13 +44,14 @@ def index():
     tacos = models.Taco.select()
     return render_template('index.html', tacos=tacos)
 
+
 # login
 @app.route('/login', methods=('Get', 'Post'))
 def login():
     form = forms.LoginForm()
     if form.validate_on_submit():
         try:
-            user = models.User.get(models.User.email==form.email.data)
+            user = models.User.get(models.User.email == form.email.data)
         except DoesNotExist:
             flash("Your email or password doesn't match", "error")
         else:
@@ -59,9 +62,12 @@ def login():
                 return redirect(url_for('index'))
             else:
                 flash("Your email or password doesn't match", "error")
+
     return render_template('login.html', form=form)
 
 # logout
+
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -70,6 +76,8 @@ def logout():
     return redirect(url_for('index'))
 
 # register
+
+
 @app.route('/register', methods=('Get', 'Post'))
 def register():
     form = forms.RegisterForm()
@@ -88,20 +96,22 @@ def register():
     return render_template('register.html', form=form)
 
 # taco
+
+
 @app.route('/taco', methods=('Get', 'Post'))
 @login_required
 def taco():
     form = forms.TacoForm()
     if form.validate_on_submit():
-        #try:
-            models.Taco.create(
-                user=g.user._get_current_object(),
-                protein=form.protein.data.lower(),
-                shell=form.shell.data.lower(),
-                cheese=form.cheese.data,
-                extras=form.extras.data.lower())
-            return redirect(url_for('index'))
-        #except:
+        # try:
+        models.Taco.create(
+            user=g.user._get_current_object(),
+            protein=form.protein.data.lower(),
+            shell=form.shell.data.lower(),
+            cheese=form.cheese.data,
+            extras=form.extras.data.lower())
+        return redirect(url_for('index'))
+        # except:
         #    flash("Taco create failed", "error")
     elif request.method == 'POST':
         flash("Taco form NOT valid", "warning")
@@ -111,14 +121,14 @@ def taco():
 if __name__ == '__main__':
     models.initialize()
     try:
-        #with models.DATABASE.transaction():
+        # with models.DATABASE.transaction():
         models.User.create_user(
             email='chris.freeman.pdx@gmail.com',
             password='password',
             admin=True)
         print("admin 'chrisfreeman' created")
     except ValueError:
-        admin = models.User.get(models.User.email=='chris.freeman.pdx@gmail.com')
+        admin = models.User.get(models.User.email ==
+                                'chris.freeman.pdx@gmail.com')
         print("admin 'chrisfreeman' exist")
     app.run(debug=DEBUG, host=HOST, port=PORT)
-
